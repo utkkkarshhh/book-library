@@ -1,0 +1,102 @@
+<%- include('partials/header.ejs'); -%>
+
+<style>
+    /* Add this to your existing CSS */
+  
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+    }
+  
+    .auth-form {
+      width: 300px;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+  
+    .auth-form h2 {
+      margin-bottom: 20px;
+      color: black; /* Updated to white */
+    }
+  
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: black; /* Updated to white */
+    }
+  
+    input {
+      width: 100%;
+      padding: 8px; /* Updated to reduce input size */
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  
+    button {
+      background-color: teal;
+      border: 0;
+      padding: 12px; /* Updated to reduce button size */
+      color: black;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+  
+    button:hover {
+      background: #006666;
+    }
+  
+    .auth-buttons {
+      text-align: center;
+    }
+  
+    .auth-buttons p {
+      color: white;
+      margin: 0;
+    }
+  
+    .auth-buttons a {
+      color: teal;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  
+    .auth-buttons a:hover {
+      text-decoration: underline;
+    }
+  </style>
+  
+  <div class="header-container">
+    <h1>Book Library</h1>
+  </div>
+  
+  <div class="form-container">
+    <form action="/login" method="POST" class="auth-form">
+      <h2>Login</h2>
+  
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+  
+      <!-- Password -->
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+  
+      <button type="submit" class="auth-button">Login</button>
+    </form>
+  
+    <div class="auth-buttons">
+      <p>Don't have an account? <a href="/register">Register</a></p>
+    </div>
+  </div>
+
+<%- include('partials/footer.ejs'); -%>

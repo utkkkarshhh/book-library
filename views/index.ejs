@@ -1,0 +1,73 @@
+<%- include('partials/header.ejs'); -%>
+
+<div class="header-container">
+  <h1>Book Library</h1>
+
+  <!-- Search form -->
+  <% if(isLoggedIn) {%>
+  <form action="/search" method="GET" class="search-form">
+    <div class="search-input-container">
+      <input
+        type="text"
+        id="search"
+        name="query"
+        autofocus
+        autocomplete="off"
+        placeholder="<%= placeholder %>"
+      />
+      <button type="submit" class="search-button">Find Books &#128269;</button>
+    </div>
+  </form>
+  <% } %> 
+  
+  <% if (!isLoggedIn) { %>
+  <div class="auth-buttons">
+    <form action="/login" method="GET" class="auth-buttons">
+      <button type="submit" class="auth-button">Login</button>
+    </form>
+    <form action="/register" method="GET" class="auth-buttons">
+      <button type="submit" class="auth-button">Register</button>
+    </form>
+  </div>
+  <% } else { %>
+  <form action="/logout" method="POST" class="logout-form">
+    <button type="submit" class="auth-button">Logout</button>
+  </form>
+  <% } %>
+</div>
+
+<% if (!isLoggedIn) { %>
+<div class="welcome-container">
+  <h1>Welcome to the Book Library!</h>
+  <p>
+    Please <a href="/login">login</a> or <a href="/register">register</a> to
+    view your books.
+  </p>
+</div>
+<% } else if (books.length === 0) { %>
+<p>No books found. Add some books to get started!</p>
+<% } else { %>
+<div class="book-container">
+  <% books.forEach(book => { %>
+  <div class="book-card">
+    <div class="book-cover">
+      <img
+        src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg"
+        alt="Book Cover"
+      />
+    </div>
+    <div class="book-details">
+      <h2><%= book.title %></h2>
+      <p>Author: <%= book.author %></p>
+      <p>Rating: <%= book.ratings %></p>
+      <p>Published: <%= book.publish_date %></p>
+    </div>
+    <!-- Delete button -->
+    <form action="/delete" method="POST">
+      <input type="hidden" name="deleteItemId" value="<%= book.id %>" />
+      <button type="submit" class="delete-button">&#10006;</button>
+    </form>
+  </div>
+  <% }); %>
+</div>
+<% } %> <%- include('partials/footer.ejs'); -%>
