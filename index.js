@@ -39,11 +39,30 @@ async function getBooksRead(userId) {
   return result.rows;
 }
 
-app.get("/", async (req, res) => {
+async function getRandombooks(){
+  const result = await axios.get();
+}
+
+app.get("/", async(req, res)=>{
   try {
     const booksData = await getBooksRead(req.session.user?.id);
     const placeholder = req.query.placeholder || "Enter book name.";
     res.render("index.ejs", {
+      books: booksData,
+      placeholder,
+      isLoggedIn,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+})
+
+app.get("/savedBooks", async (req, res) => {
+  try {
+    const booksData = await getBooksRead(req.session.user?.id);
+    const placeholder = req.query.placeholder || "Enter book name.";
+    res.render("savedBooks.ejs", {
       books: booksData,
       placeholder,
       isLoggedIn,

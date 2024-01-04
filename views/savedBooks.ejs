@@ -31,40 +31,30 @@
   </div>
   <% } else { %>
     <div class="auth-buttons">
-      <form action="/savedBooks" method="GET" class="saved-books">
-        <button type="submit" class="auth-button">Saved Books</button>
-      </form>
-      <form action="/logout" method="POST" class="logout-form">
-        <button type="submit" class="auth-button">Logout</button>
-      </form>
-    </div>
+    <form action="/" method="GET" class="explore-books">
+      <button type="submit" class="auth-button">Explore Books</button>
+    </form>
+  <form action="/logout" method="POST" class="logout-form">
+    <button type="submit" class="auth-button">Logout</button>
+  </form>
+</div>
   <% } %>
 </div>
 
 <% if (!isLoggedIn) { %>
 <div class="welcome-container">
-  <h1>Welcome to the Book Library!</h1>
+  <h1>Welcome to the Book Library!</h>
   <p>
     Please <a href="/login">login</a> or <a href="/register">register</a> to
     view your books.
   </p>
 </div>
+<% } else if (books.length === 0) { %>
+  <p>No books found. Add some books to get started!</p>
 <% } else { %>
-  <div class="explore-books-section">
-    <h1 class="heading">Explore Books</h1>
-
-    <!-- Add 8 buttons with different genre names -->
-    <div class="genre-buttons">
-      <button class="genre-button" onclick="showBooksByGenre('Fantasy')">Fantasy</button>
-      <button class="genre-button" onclick="showBooksByGenre('Mystery')">Mystery</button>
-      <button class="genre-button" onclick="showBooksByGenre('Romance')">Romance</button>
-      <button class="genre-button" onclick="showBooksByGenre('Science Fiction')">Science Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Thriller')">Thriller</button>
-      <button class="genre-button" onclick="showBooksByGenre('Historical Fiction')">Historical Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Non-Fiction')">Non-Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Biography')">Biography</button>
-    </div>
-
+  <div class="saved-books-section">
+    <h1 class="heading">Saved Books</h1>
+  
     <div class="book-container">
       <% books.forEach(book => { %>
         <div class="book-card">
@@ -80,10 +70,10 @@
             <p>Rating: <%= book.ratings %></p>
             <p>Published: <%= book.publish_date %></p>
           </div>
-          <!-- Add button instead of delete button -->
-          <form action="/add" method="POST">
-            <input type="hidden" name="addItemId" value="<%= book.id %>" />
-            <button type="submit" class="add-button">&#10010;</button>
+          <!-- Delete button -->
+          <form action="/delete" method="POST">
+            <input type="hidden" name="deleteItemId" value="<%= book.id %>" />
+            <button type="submit" class="delete-button">&#10006;</button>
           </form>
         </div>
       <% }); %>
