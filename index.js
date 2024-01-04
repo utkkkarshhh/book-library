@@ -39,24 +39,51 @@ async function getBooksRead(userId) {
   return result.rows;
 }
 
-async function getRandombooks(){
-  const result = await axios.get();
+async function getBookWithGenre(genre) {
+  try {
+    const result = await axios.get(
+      "https://openlibrary.org/subjects/" + genre + ".json"
+    );
+
+    const booksOfSpecificGenre = result.data.works.map((work) => ({
+      key: work.key,
+      title: work.title,
+      author_name: work.authors[0].name || "N/A",
+      publish_date: work.first_publish_year || "N/A",
+      ratings_average: work.average_rating || "N/A",
+      cover_id: work.cover_id,
+      // Add other properties you need here...
+    }));
+
+    return booksOfSpecificGenre;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
-app.get("/", async(req, res)=>{
+app.get("/", async (req, res) => {
   try {
-    const booksData = await getBooksRead(req.session.user?.id);
+    let booksData;
+    let selectedGenre = req.query.selectedGenre || "fantasy";
+
+    if (req.query.selectedGenre) {
+      selectedGenre = req.query.selectedGenre;
+    }
+    booksData = await getBookWithGenre(selectedGenre);
     const placeholder = req.query.placeholder || "Enter book name.";
+
     res.render("index.ejs", {
       books: booksData,
       placeholder,
+      selectedGenre,
       isLoggedIn,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-})
+});
 
 app.get("/savedBooks", async (req, res) => {
   try {
@@ -90,7 +117,7 @@ app.get("/search", async (req, res) => {
     const data = result.data.docs[0];
     const existingBook = await db.query(
       "SELECT * FROM books_read WHERE user_id = $1 AND book_id = $2",
-      [req.session.user?.id, data.key ]
+      [req.session.user?.id, data.key]
     );
 
     if (existingBook.rows.length === 0) {
@@ -106,10 +133,10 @@ app.get("/search", async (req, res) => {
           req.session.user?.id,
         ]
       );
-      res.redirect("/");
+      res.redirect("/savedBooks");
     } else {
       res.redirect(
-        "/?placeholder=Book%20already%20exists.%20Nothing%20was%20inserted."
+        "/savedBooks?placeholder=Book%20already%20exists.%20Nothing%20was%20inserted."
       );
     }
   } catch (error) {
@@ -123,9 +150,48 @@ app.post("/delete", async (req, res) => {
   console.log(id);
   try {
     await db.query("DELETE FROM books_read WHERE id = $1", [id]);
-    res.redirect("/");
+    res.redirect("/savedBooks");
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/addToSaved", async (req, res) => {
+  try {
+    const bookKey = req.body.bookKey;
+    const bookTitle = req.body.bookTitle;
+    const bookAuthor = req.body.bookAuthor;
+    const bookPublishDate = req.body.bookPublishDate;
+    const bookRating = req.body.bookRating;
+    const bookCoverId = req.body.bookCoverId;
+
+    const existingBook = await db.query(
+      "SELECT * FROM books_read WHERE user_id = $1 AND book_id = $2",
+      [req.session.user?.id, bookKey]
+    );
+
+    if (existingBook.rows.length === 0) {
+      await db.query(
+        "INSERT INTO books_read(book_id, title, author, publish_date, ratings, cover_id, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [
+          bookKey,
+          bookTitle,
+          bookAuthor,
+          bookPublishDate,
+          parseFloat(bookRating) || 0, // Convert to numeric or use 0 if not available
+          bookCoverId,
+          req.session.user?.id,
+        ]
+      );
+      res.redirect("/savedBooks");
+    } else {
+      res.redirect(
+        "/savedBooks?placeholder=Book%20already%20exists.%20Nothing%20was%20inserted."
+      );
+    }
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

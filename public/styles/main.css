@@ -10,6 +10,7 @@ p {
 
 a{
   color: green;
+  text-decoration: none;
 }
 
 body {
@@ -209,9 +210,8 @@ h1 {
   margin-bottom: 10px;
 }
 
-.book-counter p {
-  color: #fff;
-  margin: 10px 0;
+.no-books-available{
+  font-weight: 600;
 }
 
 /* Responsive design for smaller screens */

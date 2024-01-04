@@ -1,7 +1,7 @@
 <%- include('partials/header.ejs'); -%>
 
 <div class="header-container">
-  <h1>Book Library</h1>
+  <a href="/"><h1>Book Library</h1></a>
 
   <!-- Search form -->
   <% if(isLoggedIn) {%>
@@ -54,6 +54,10 @@
 <% } else { %>
   <div class="saved-books-section">
     <h1 class="heading">Saved Books</h1>
+    <div class="book-counter">
+      <p>You have saved <%= books.length %> <%= books.length === 1 ? 'book' : 'books' %>.</p>
+    </div>
+  
   
     <div class="book-container">
       <% books.forEach(book => { %>

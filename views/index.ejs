@@ -1,7 +1,7 @@
 <%- include('partials/header.ejs'); -%>
 
 <div class="header-container">
-  <h1>Book Library</h1>
+  <a href="/"><h1>Book Library</h1></a>
 
   <!-- Search form -->
   <% if(isLoggedIn) {%>
@@ -18,9 +18,7 @@
       <button type="submit" class="search-button">Find Books &#128269;</button>
     </div>
   </form>
-  <% } %> 
-  
-  <% if (!isLoggedIn) { %>
+  <% } %> <% if (!isLoggedIn) { %>
   <div class="auth-buttons">
     <form action="/login" method="GET" class="auth-buttons">
       <button type="submit" class="auth-button">Login</button>
@@ -30,14 +28,14 @@
     </form>
   </div>
   <% } else { %>
-    <div class="auth-buttons">
-      <form action="/savedBooks" method="GET" class="saved-books">
-        <button type="submit" class="auth-button">Saved Books</button>
-      </form>
-      <form action="/logout" method="POST" class="logout-form">
-        <button type="submit" class="auth-button">Logout</button>
-      </form>
-    </div>
+  <div class="auth-buttons">
+    <form action="/savedBooks" method="GET" class="saved-books">
+      <button type="submit" class="auth-button">Saved Books</button>
+    </form>
+    <form action="/logout" method="POST" class="logout-form">
+      <button type="submit" class="auth-button">Logout</button>
+    </form>
+  </div>
   <% } %>
 </div>
 
@@ -50,45 +48,125 @@
   </p>
 </div>
 <% } else { %>
-  <div class="explore-books-section">
-    <h1 class="heading">Explore Books</h1>
+<div class="explore-books-section">
+  <h1 class="heading">Explore Books</h1>
 
-    <!-- Add 8 buttons with different genre names -->
+  <!-- Add 8 buttons with different genre names -->
+  <form action="/" method="GET" class="genre-form">
     <div class="genre-buttons">
-      <button class="genre-button" onclick="showBooksByGenre('Fantasy')">Fantasy</button>
-      <button class="genre-button" onclick="showBooksByGenre('Mystery')">Mystery</button>
-      <button class="genre-button" onclick="showBooksByGenre('Romance')">Romance</button>
-      <button class="genre-button" onclick="showBooksByGenre('Science Fiction')">Science Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Thriller')">Thriller</button>
-      <button class="genre-button" onclick="showBooksByGenre('Historical Fiction')">Historical Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Non-Fiction')">Non-Fiction</button>
-      <button class="genre-button" onclick="showBooksByGenre('Biography')">Biography</button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Fantasy"
+      >
+        Fantasy
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Mystery"
+      >
+        Mystery
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Fiction"
+      >
+        Fiction
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Crime"
+      >
+        Crime
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Science"
+      >
+        Science
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Narrative"
+      >
+        Narrative
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="History"
+      >
+        History
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Sci-Fi"
+      >
+        Sci-Fi
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Memoir"
+      >
+        Memoir
+      </button>
+      <button
+        class="genre-button"
+        type="submit"
+        name="selectedGenre"
+        value="Self-Help"
+      >
+        Self-Help
+      </button>
     </div>
+  </form>
 
-    <div class="book-container">
-      <% books.forEach(book => { %>
-        <div class="book-card">
-          <div class="book-cover">
-            <img
-              src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg"
-              alt="Book Cover"
-            />
-          </div>
-          <div class="book-details">
-            <h2><%= book.title %></h2>
-            <p>Author: <%= book.author %></p>
-            <p>Rating: <%= book.ratings %></p>
-            <p>Published: <%= book.publish_date %></p>
-          </div>
-          <!-- Add button instead of delete button -->
-          <form action="/add" method="POST">
-            <input type="hidden" name="addItemId" value="<%= book.id %>" />
-            <button type="submit" class="add-button">&#10010;</button>
-          </form>
-        </div>
-      <% }); %>
+  <div class="book-container">
+    <% if (books && books.length) { %> <% books.forEach(book => { %>
+    <div class="book-card">
+      <div class="book-cover">
+        <img
+          src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg"
+          alt="Book Cover"
+        />
+      </div>
+      <div class="book-details">
+        <h2><%= book.title %></h2>
+        <p><b>Author:</b> <%= book.author_name%></p>
+        <p><b>Rating:</b> <%= book.ratings_average%></p>
+        <p><b>Published:</b> <%= book.publish_date%></p>
+      </div>
+      <!-- Add button instead of delete button -->
+      <form action="/addToSaved" method="POST">
+        <input type="hidden" name="bookKey" value="<%= book.key %>" />
+        <input type="hidden" name="bookTitle" value="<%= book.title %>" />
+        <input type="hidden" name="bookAuthor" value="<%= book.author_name %>" />
+        <input type="hidden" name="bookPublishDate" value="<%= book.publish_date %>" />
+        <input type="hidden" name="bookRating" value="<%= book.ratings_average %>" />
+        <input type="hidden" name="bookCoverId" value="<%= book.cover_id %>" />
+      
+        <button type="submit" class="add-button">&#10010;</button>
+      </form>
     </div>
+    <% }); %> <% } else { %>
+    <p class="no-books-available">No books available.</p>
+    <% } %>
   </div>
-<% } %>
-
-<%- include('partials/footer.ejs'); -%>
+</div>
+<% } %> <%- include('partials/footer.ejs'); -%>
