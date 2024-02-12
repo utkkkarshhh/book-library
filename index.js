@@ -1,25 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const pg = require('pg');
 const axios = require("axios");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const db = require("./database");
 
 const app = express();
-const port = 3000;
-const { Pool } = pg;
-
-
-const db = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "books",
-  password: "utkarsh",
-  port: 8000,
-})
-
-db.connect();
+const port = process.env.PORT || 3000;
 
 let isLoggedIn = false;
 
