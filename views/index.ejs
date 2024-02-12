@@ -51,7 +51,6 @@
 <div class="explore-books-section">
   <h1 class="heading">Explore Books</h1>
 
-  <!-- Add 8 buttons with different genre names -->
   <form action="/" method="GET" class="genre-form">
     <div class="genre-buttons">
       <button
@@ -152,7 +151,6 @@
         <p><b>Rating:</b> <%= book.ratings_average%></p>
         <p><b>Published:</b> <%= book.publish_date%></p>
       </div>
-      <!-- Add button instead of delete button -->
       <form action="/addToSaved" method="POST">
         <input type="hidden" name="bookKey" value="<%= book.key %>" />
         <input type="hidden" name="bookTitle" value="<%= book.title %>" />

@@ -52,7 +52,6 @@ async function getBookWithGenre(genre) {
       publish_date: work.first_publish_year || "N/A",
       ratings_average: work.average_rating || "N/A",
       cover_id: work.cover_id,
-      // Add other properties you need here...
     }));
 
     return booksOfSpecificGenre;
@@ -179,7 +178,7 @@ app.post("/addToSaved", async (req, res) => {
           bookTitle,
           bookAuthor,
           bookPublishDate,
-          parseFloat(bookRating) || 0, // Convert to numeric or use 0 if not available
+          parseFloat(bookRating) || 0,
           bookCoverId,
           req.session.user?.id,
         ]
@@ -246,7 +245,7 @@ app.post("/login", async (req, res) => {
         id: result.rows[0].id,
         email: result.rows[0].email_address,
       };
-      console.log("Session User Object:", req.session.user);
+      console.log("User in this session:", req.session.user);
       isLoggedIn = true;
       res.redirect("/");
     } else {

@@ -49,11 +49,11 @@ h1 {
   background: #f2f2f2;
   border-radius: 8px;
   overflow: hidden;
-  width: 100%; /* Adjust the width to your preference */
+  width: 100%; 
 }
 
 input {
-  flex: 1; /* This will make the input take up remaining space */
+  flex: 1; 
   width: 40%;
   padding: 15px;
   border: 0;
@@ -87,13 +87,13 @@ button {
   padding: 15px;
   color: #ffffff;
   font-size: 14px;
-  border-radius: 8px; /* Rounded corners */
-  transition: background 0.3s ease; /* Smooth transition on hover */
+  border-radius: 8px;
+  transition: background 0.3s ease; 
   cursor: pointer;
 }
 
 button:hover {
-  background: #006666; /* Darker background on hover */
+  background: #006666; 
 }
 
 
@@ -214,14 +214,12 @@ h1 {
   font-weight: 600;
 }
 
-/* Responsive design for smaller screens */
 @media screen and (max-width: 600px) {
   .heading {
     font-size: 24px;
   }
 }
 
-/* Responsive design for smaller screens */
 @media screen and (max-width: 600px) {
   .book-container {
     flex-direction: column;
@@ -235,8 +233,8 @@ h1 {
 
 
 footer {
-  background-color: #333; /* Background color for the footer */
-  color: white; /* Text color for the footer */
+  background-color: #333; 
+  color: white;
   text-align: center;
   padding: 20px;
 }
