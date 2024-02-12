@@ -1,6 +1,14 @@
 {
-  "version": 2,
-  "name": "book-library",
-  "builds": [{ "src": "*.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/index.js" }]
-}
+    "version": 2,
+    "builds": [
+      { "src": "index.js", "use": "@vercel/node" }
+    ],
+    "env": {
+      "PG_USER": "<your-postgres-user>",
+      "PG_PASSWORD": "<your-postgres-password>",
+      "PG_HOST": "<your-postgres-host>",
+      "PG_PORT": "<your-postgres-port>",
+      "PG_DATABASE": "<your-postgres-database>"
+    }
+  }
+  

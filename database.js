@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 
 // const db = new Pool({
 //     user: "postgres",
@@ -9,15 +9,19 @@ const { Pool } = require('pg');
 //   });
 
 const db = new Pool({
-  connectionString: process.env.POSTGRES_URL ,
-})
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  host: process.env.PG_HOST,
+  port: process.env.PG_PORT,
+  database: process.env.PG_DATABASE,
+});
 
-  db.connect((err) => {
-    if (err) {
-      console.error('Error connecting to PostgreSQL:', err);
-    } else {
-      console.log("Connected to PostgreSQL Successfully");
-    }
-  });
+db.connect((err) => {
+  if (err) {
+    console.error("Error connecting to PostgreSQL:", err);
+  } else {
+    console.log("Connected to PostgreSQL Successfully");
+  }
+});
 
-  module.exports = db;
+module.exports = db;
