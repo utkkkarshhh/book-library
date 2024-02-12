@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "builds": [
-      { "src": "index.js", "use": "@vercel/node" }
-    ],
     "env": {
       "PG_USER": "<your-postgres-user>",
       "PG_PASSWORD": "<your-postgres-password>",
