@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const db = require("./database");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = parseInt(process.env.PORT, 10) || 3000;
 
 let isLoggedIn = false;
 
